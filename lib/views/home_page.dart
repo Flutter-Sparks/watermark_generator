@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
       ByteData? byteData =
           await image.toByteData(format: ui.ImageByteFormat.png);
       if (byteData == null) {
-        throw Exception();
+        throw Exception("Something went wrong");
       }
       Uint8List pngBytes = byteData.buffer.asUint8List();
       await ImageGallerySaver.saveImage(pngBytes, name: 'image_$sliderValue');
