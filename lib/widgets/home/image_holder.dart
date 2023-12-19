@@ -10,9 +10,12 @@ import 'package:watermark_generator/widgets/decorated_container.dart';
 class ImageHolder extends StatefulWidget {
   final GlobalKey thumbnailKey;
   final File? selectedFile;
+  final File? watermarkImage;
+
   final String watermarkText;
   final Function(File) onSelected;
   final double sliderValue;
+  final double opacity;
   final AlignmentGeometry selectedPosition;
   const ImageHolder({
     Key? key,
@@ -22,6 +25,8 @@ class ImageHolder extends StatefulWidget {
     required this.onSelected,
     required this.sliderValue,
     required this.selectedPosition,
+    this.watermarkImage,
+    required this.opacity,
   }) : super(key: key);
 
   @override
@@ -68,14 +73,22 @@ class _ImageHolderState extends State<ImageHolder> {
                     ),
                     Align(
                       alignment: widget.selectedPosition,
-                      child: Text(
-                        widget.watermarkText,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: widget.sliderValue,
-                          color: Colors.white.withOpacity(0.4),
-                        ),
-                      ),
+                      child: widget.watermarkImage != null
+                          ? Opacity(
+                              opacity: widget.opacity,
+                              child: Image(
+                                image: FileImage(widget.watermarkImage!),
+                                height: widget.sliderValue * 3,
+                              ),
+                            )
+                          : Text(
+                              widget.watermarkText,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: widget.sliderValue,
+                                color: Colors.white.withOpacity(widget.opacity),
+                              ),
+                            ),
                     ),
                   ],
                 ),
